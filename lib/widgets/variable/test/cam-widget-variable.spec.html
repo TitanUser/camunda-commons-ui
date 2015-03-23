@@ -1,0 +1,211 @@
+<html>
+  <head>
+    <link href="/styles.css" rel="stylesheet" />
+    <link href="/test-styles.css" rel="stylesheet" />
+  </head>
+  <body class="cam-widget-variable-test-page">
+    <variable>
+      <div>
+        <h1>Header</h1>
+      </div>
+    </variable>
+
+    <section class="widget-description">
+      <variable>
+        <h2>Description</h2>
+      </variable>
+      <p>A variable navigation bar with a branding on the left and the common menus on the right.
+      You can customize what comes in the center with <a href="//docs.angularjs.org/api/ng/directive/ngTransclude">ng-transclude</a>.</p>
+    </section>
+
+    <section class="widget-reference">
+      <variable>
+        <h2>Usage</h2>
+        This widget depends an authentication service (provided in camunda-commons-ui - lib/auth).
+      </variable>
+
+      <h3>Options</h3>
+      <dl>
+        <dt><span class="badge">@</span> brand-name</dt>
+        <dd>The brand name for the application</dd>
+        <dt><span class="badge">@</span> current-app</dt>
+        <dd>Indicate on which app the user currently is (used to limit the choices in the app switch dropdown).</dd>
+        <dt><span class="badge">=</span> authentication</dt>
+        <dd>can be passed to customize the dropdown menus (showing or not the account and limit the choices of apps the user can switch to according to its authorizations).</dd>
+      </dl>
+    </section>
+
+    <section class="widget-examples">
+      <variable>
+        <h2>Examples</h2>
+      </variable>
+
+      <div class="widget-example"
+           id="empty">
+        <h3>Without content</h3>
+        <pre ng-non-bindable>&lt;div cam-widget-variable
+     brand-name="Cammunda Commons UI"&gt;&lt;/div&gt;</pre>
+        <div class="test-container">
+          <div cam-widget-variable
+               brand-name="Cammunda Commons UI"></div>
+        </div><!-- /.test-container -->
+      </div><!-- /.widget-example -->
+
+
+      <div class="widget-example"
+           id="with-content">
+        <h3>With content</h3>
+        <pre ng-non-bindable>&lt;div cam-widget-variable
+     brand-name="Cammunda Commons UI"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;
+      &lt;a href&gt;Awesome&lt;/a&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre>
+        <div class="test-container">
+          <div cam-widget-variable
+               brand-name="Cammunda Commons UI">
+            <ul>
+              <li>
+                <a href>Awesome</a>
+              </li>
+            </ul>
+          </div>
+        </div><!-- /.test-container -->
+      </div><!-- /.widget-example -->
+
+
+      <div class="widget-example"
+           id="anonymous"
+           ng-controller="testAnonymousController">
+        <h3>Anonymous</h3>
+        <pre ng-non-bindable>&lt;div cam-widget-variable
+     authentication="auth"
+     brand-name="Cammunda Commons UI"
+     current-app="{{ ctrlCurrentApp }}"&gt;
+  You are on `{{ ctrlCurrentApp }}` app.
+&lt;/div&gt;</pre>
+        <div class="test-container">
+          <div cam-widget-variable
+               authentication="auth"
+               brand-name="Cammunda Commons UI"
+               current-app="{{ ctrlCurrentApp }}">
+            You are on `{{ ctrlCurrentApp }}` app.
+          </div>
+        </div><!-- /.test-container -->
+      </div><!-- /.widget-example -->
+
+
+      <div class="widget-example"
+           id="authenticated"
+           ng-controller="testAuthenticatedController">
+        <h3>Authenticated</h3>
+        <pre ng-non-bindable>&lt;div cam-widget-variable
+     authentication="auth"
+     brand-name="Cammunda Commons UI"
+     current-app="{{ ctrlCurrentApp }}"&gt;
+&lt;/div&gt;
+&lt;div class="row"&gt;
+  &lt;div class="col-xs-12"&gt;
+    testAuthenticatedController scope.ctrlCurrentApp: `{{ ctrlCurrentApp }}`
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+        <div class="test-container">
+          <div cam-widget-variable
+               authentication="auth"
+               brand-name="Cammunda Commons UI"
+               current-app="{{ ctrlCurrentApp }}">
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              testAuthenticatedController scope.ctrlCurrentApp: `{{ ctrlCurrentApp }}`
+            </div>
+          </div>
+        </div><!-- /.test-container -->
+      </div><!-- /.widget-example -->
+    </section>
+
+    <footer>
+      <nav>
+        <ul class="list-inline">
+          <li>
+            <a href="http://camunda.org">camunda.org</a>
+          </li>
+          <li>
+            <a href="http://github.com/camunda-commons-ui">commons UI lib</a>
+          </li>
+        </ul>
+      </nav>
+    </footer>
+
+    <script src="/node_modules/requirejs/require.js"></script>
+    <script>
+      require.config({
+        paths: {text: '/node_modules/requirejs-text/text'}
+      });
+      require(['text!/test-conf.json'], function(rConf) {
+        'use strict';
+        rConf = JSON.parse(rConf);
+        require.config(rConf);
+        require([
+          'angular',
+          'lib/widgets/variable/cam-widget-variable',
+          'angular-bootstrap'
+        ], function (
+          angular,
+          variableDefinition
+        ) {
+          // naive auth object for test purposes
+          function Authentication(username, accesses) {
+            this.name = username || '';
+            this._accesses = accesses || [];
+          }
+          Authentication.prototype.canAccess = function (appName) {
+            return !this._accesses.length || this._accesses.indexOf(appName) > -1;
+          };
+
+
+          var mockedDependenciesModule = angular.module('mockedDependencies', []);
+
+          mockedDependenciesModule.service('AuthenticationService', [function () {
+            this.logout = function () {
+              console.info('loging out');
+            };
+          }]);
+
+          mockedDependenciesModule.provider('uriFilter', [function () {
+            return { $get: function () {} };
+          }]);
+          mockedDependenciesModule.filter('uri', [function () {
+            return function () { return '#uri-filter-replaced'; };
+          }]);
+
+
+
+          var variableModule = angular.module('variableModule', [
+            'ui.bootstrap',
+            mockedDependenciesModule.name
+          ]);
+          variableModule.directive('camWidgetHeader', variableDefinition);
+
+
+
+          var testModule = angular.module('testModule', [variableModule.name]);
+
+          testModule.controller('testAnonymousController', ['$scope', function($scope) {
+            $scope.ctrlCurrentApp = 'admin';
+            $scope.auth = new Authentication();
+          }]);
+
+          testModule.controller('testAuthenticatedController', ['$scope', function($scope) {
+            $scope.ctrlCurrentApp = 'tasklist';
+            $scope.auth = new Authentication('mustermann', ['tasklist', 'admin']);
+          }]);
+
+          angular.bootstrap(document.body, [testModule.name]);
+        });
+      });
+    </script>
+  </body>
+</html>
