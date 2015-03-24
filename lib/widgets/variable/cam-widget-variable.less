@@ -1,1 +1,32 @@
-[cam-widget-variable] {}
+[cam-widget-variable] {
+  // styles to display
+  &[display] {
+    .make-row();
+
+    > .name,
+    > .value,
+    > .type {
+      .make-xs-column(4);
+    }
+
+    > .value {
+      font-family: monospace;
+    }
+  }
+
+  // styles to edit
+  .input-group {
+    .name {
+      width: 33%;
+    }
+    .value {
+      width: 67%;
+      border-left: none;
+    }
+  }
+
+  .dropdown-toggle {
+    min-width: 120px;
+    text-align: right;
+  }
+}

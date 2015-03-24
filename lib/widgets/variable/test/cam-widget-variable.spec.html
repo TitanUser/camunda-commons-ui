@@ -6,7 +6,7 @@
   <body class="cam-widget-variable-test-page">
     <variable>
       <div>
-        <h1>Header</h1>
+        <h1>Variable</h1>
       </div>
     </variable>
 
@@ -14,24 +14,20 @@
       <variable>
         <h2>Description</h2>
       </variable>
-      <p>A variable navigation bar with a branding on the left and the common menus on the right.
-      You can customize what comes in the center with <a href="//docs.angularjs.org/api/ng/directive/ngTransclude">ng-transclude</a>.</p>
+      <p>A widget to display and manipulate variables used by the Camunda BPM suite.</p>
     </section>
 
     <section class="widget-reference">
       <variable>
         <h2>Usage</h2>
-        This widget depends an authentication service (provided in camunda-commons-ui - lib/auth).
       </variable>
 
       <h3>Options</h3>
       <dl>
-        <dt><span class="badge">@</span> brand-name</dt>
-        <dd>The brand name for the application</dd>
-        <dt><span class="badge">@</span> current-app</dt>
-        <dd>Indicate on which app the user currently is (used to limit the choices in the app switch dropdown).</dd>
-        <dt><span class="badge">=</span> authentication</dt>
-        <dd>can be passed to customize the dropdown menus (showing or not the account and limit the choices of apps the user can switch to according to its authorizations).</dd>
+        <dt><span class="badge">=</span> variable</dt>
+        <dd>The variable to be edited / displayed</dd>
+        <dt><span class="badge">@</span> display</dt>
+        <dd>Takes a boolean determining if the widget is only aimed to display the variable</dd>
       </dl>
     </section>
 
@@ -40,87 +36,31 @@
         <h2>Examples</h2>
       </variable>
 
+
       <div class="widget-example"
-           id="empty">
-        <h3>Without content</h3>
-        <pre ng-non-bindable>&lt;div cam-widget-variable
-     brand-name="Cammunda Commons UI"&gt;&lt;/div&gt;</pre>
+           id="example-1"
+           ng-controller="example1Controller">
+        <h3>Editable variables</h3>
+        <pre ng-non-bindable></pre>
         <div class="test-container">
-          <div cam-widget-variable
-               brand-name="Cammunda Commons UI"></div>
+          <div ng-repeat="variable in vars"
+               cam-widget-variable
+               variable="variable">
+          </div>
+          <pre>{{ vars | json }}</pre>
         </div><!-- /.test-container -->
       </div><!-- /.widget-example -->
 
-
       <div class="widget-example"
-           id="with-content">
-        <h3>With content</h3>
-        <pre ng-non-bindable>&lt;div cam-widget-variable
-     brand-name="Cammunda Commons UI"&gt;
-  &lt;ul&gt;
-    &lt;li&gt;
-      &lt;a href&gt;Awesome&lt;/a&gt;
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/div&gt;</pre>
+           id="example-2"
+           ng-controller="example2Controller">
+        <h3>Displayed variables</h3>
+        <pre ng-non-bindable></pre>
         <div class="test-container">
-          <div cam-widget-variable
-               brand-name="Cammunda Commons UI">
-            <ul>
-              <li>
-                <a href>Awesome</a>
-              </li>
-            </ul>
-          </div>
-        </div><!-- /.test-container -->
-      </div><!-- /.widget-example -->
-
-
-      <div class="widget-example"
-           id="anonymous"
-           ng-controller="testAnonymousController">
-        <h3>Anonymous</h3>
-        <pre ng-non-bindable>&lt;div cam-widget-variable
-     authentication="auth"
-     brand-name="Cammunda Commons UI"
-     current-app="{{ ctrlCurrentApp }}"&gt;
-  You are on `{{ ctrlCurrentApp }}` app.
-&lt;/div&gt;</pre>
-        <div class="test-container">
-          <div cam-widget-variable
-               authentication="auth"
-               brand-name="Cammunda Commons UI"
-               current-app="{{ ctrlCurrentApp }}">
-            You are on `{{ ctrlCurrentApp }}` app.
-          </div>
-        </div><!-- /.test-container -->
-      </div><!-- /.widget-example -->
-
-
-      <div class="widget-example"
-           id="authenticated"
-           ng-controller="testAuthenticatedController">
-        <h3>Authenticated</h3>
-        <pre ng-non-bindable>&lt;div cam-widget-variable
-     authentication="auth"
-     brand-name="Cammunda Commons UI"
-     current-app="{{ ctrlCurrentApp }}"&gt;
-&lt;/div&gt;
-&lt;div class="row"&gt;
-  &lt;div class="col-xs-12"&gt;
-    testAuthenticatedController scope.ctrlCurrentApp: `{{ ctrlCurrentApp }}`
-  &lt;/div&gt;
-&lt;/div&gt;</pre>
-        <div class="test-container">
-          <div cam-widget-variable
-               authentication="auth"
-               brand-name="Cammunda Commons UI"
-               current-app="{{ ctrlCurrentApp }}">
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              testAuthenticatedController scope.ctrlCurrentApp: `{{ ctrlCurrentApp }}`
-            </div>
+          <div ng-repeat="variable in vars"
+               cam-widget-variable
+               variable="variable"
+               display="true">
           </div>
         </div><!-- /.test-container -->
       </div><!-- /.widget-example -->
@@ -156,51 +96,73 @@
           angular,
           variableDefinition
         ) {
-          // naive auth object for test purposes
-          function Authentication(username, accesses) {
-            this.name = username || '';
-            this._accesses = accesses || [];
-          }
-          Authentication.prototype.canAccess = function (appName) {
-            return !this._accesses.length || this._accesses.indexOf(appName) > -1;
-          };
-
-
-          var mockedDependenciesModule = angular.module('mockedDependencies', []);
-
-          mockedDependenciesModule.service('AuthenticationService', [function () {
-            this.logout = function () {
-              console.info('loging out');
-            };
-          }]);
-
-          mockedDependenciesModule.provider('uriFilter', [function () {
-            return { $get: function () {} };
-          }]);
-          mockedDependenciesModule.filter('uri', [function () {
-            return function () { return '#uri-filter-replaced'; };
-          }]);
-
-
-
           var variableModule = angular.module('variableModule', [
-            'ui.bootstrap',
-            mockedDependenciesModule.name
+            'ui.bootstrap'
           ]);
-          variableModule.directive('camWidgetHeader', variableDefinition);
-
+          variableModule.directive('camWidgetVariable', variableDefinition);
 
 
           var testModule = angular.module('testModule', [variableModule.name]);
-
-          testModule.controller('testAnonymousController', ['$scope', function($scope) {
-            $scope.ctrlCurrentApp = 'admin';
-            $scope.auth = new Authentication();
+          var vars = [
+            {
+              name:   null,
+              type:   null
+            },
+            {
+              name:   'booleanVar',
+              type:   'Boolean',
+              value:  true
+            },
+            {
+              name:   'bytesVar',
+              type:   'Bytes'
+            },
+            {
+              name:   'dateVar',
+              type:   'Date',
+              value:  '2015-03-23T13:14:06.340Z'
+            },
+            {
+              name:   'doubleVar',
+              type:   'Double',
+              value:  '12.34'
+            },
+            {
+              name:   'integerVar',
+              type:   'Integer',
+              value:  '1000'
+            },
+            {
+              name:   'longVar',
+              type:   'Long',
+              value:  '-100000000'
+            },
+            {
+              name:   'nullVar',
+              type:   'Null',
+              value:  null
+            },
+            {
+              name:   'objectVar',
+              type:   'Object',
+              value:  {}
+            },
+            {
+              name:   'shortVar',
+              type:   'Short',
+              value:  '-32768'
+            },
+            {
+              name:   'stringVar',
+              type:   'String',
+              value:  'Some string value'
+            }
+          ];
+          testModule.controller('example1Controller', ['$scope', function($scope) {
+            $scope.vars = vars;
           }]);
-
-          testModule.controller('testAuthenticatedController', ['$scope', function($scope) {
-            $scope.ctrlCurrentApp = 'tasklist';
-            $scope.auth = new Authentication('mustermann', ['tasklist', 'admin']);
+          testModule.controller('example2Controller', ['$scope', function($scope) {
+            $scope.vars = vars;
           }]);
 
           angular.bootstrap(document.body, [testModule.name]);
