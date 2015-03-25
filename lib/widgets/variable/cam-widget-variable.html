@@ -1,20 +1,9 @@
+<div ng-if="display" class="type">{{ variable.type }}</div>
 <div ng-if="display" class="name">{{ variable.name }}</div>
 <div ng-if="display" class="value">{{ variable.value }}</div>
-<div ng-if="display" class="type">{{ variable.type }}</div>
 
 <div class="input-group"
      ng-if="!display">
-
-  <input type="text"
-         class="form-control name"
-         ng-model="variable.name"
-         placeholder="varName" />
-
-  <input type="text"
-         class="form-control value"
-         ng-model="variable.value"
-         placeholder="Value of the variable" />
-
   <div class="input-group-btn dropdown">
     <button class="btn btn-default dropdown-toggle"
             data-toggle="dropdown">
@@ -28,4 +17,14 @@
       </li>
     </ul>
   </div><!-- /btn-group -->
+
+  <input type="text"
+         class="form-control name"
+         ng-model="variable.name"
+         placeholder="varName" />
+
+  <input type="text"
+         class="form-control value"
+         ng-model="variable.value"
+         placeholder="Value of the variable" />
 </div>

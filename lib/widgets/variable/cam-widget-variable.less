@@ -3,12 +3,15 @@
   &[display] {
     .make-row();
 
-    > .name,
-    > .value,
     > .type {
-      .make-xs-column(4);
+      .make-xs-column(2);
+    }
+    > .name,
+    > .value {
+      .make-xs-column(5);
     }
 
+    > .type,
     > .value {
       font-family: monospace;
     }
