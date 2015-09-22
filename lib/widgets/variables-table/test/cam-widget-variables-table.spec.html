@@ -1,0 +1,234 @@
+<html>
+  <head>
+    <title>Camunda commons UI library</title>
+    <base href="/" />
+    <link rel="icon" href="resources/img/favicon.ico" />
+    <link href="styles.css" rel="stylesheet" />
+    <link href="test-styles.css" rel="stylesheet" />
+  </head>
+  <body class="cam-widget-variables-table-test-page">
+    <!-- gh-pages-menu -->
+
+    <header>
+      <div>
+        <h1>Variables Table</h1>
+      </div>
+    </header>
+
+    <section class="widget-description">
+      <header>
+        <h2>Description</h2>
+      </header>
+      <p>A widget to display and manipulate variables used by the Camunda BPM suite.</p>
+    </section>
+
+    <section class="widget-reference">
+      <header>
+        <h2>Usage</h2>
+      </header>
+
+      <h3>Options</h3>
+      <dl>
+        <dt><span class="badge">=</span> cam-variables</dt>
+        <dd>The variable to be edited / displayed</dd>
+
+        <dt><span class="badge">@?</span> display</dt>
+        <dd>
+          Takes a boolean determining if the widget is only aimed to display the variable.
+          <a href="#example-3">Example</a>
+        </dd>
+
+        <dt><span class="badge">=?</span> shown</dt>
+        <dd>
+          Takes an array of strings to determine which parts of the variable is shown.<br/>
+          Valid strings:
+          <ul>
+            <li><code>type</code></li>
+            <li><code>name</code></li>
+            <li><code>value</code></li>
+          </ul>
+          <a href="#example-3">Example</a>
+        </dd>
+
+        <dt><span class="badge">=?</span> disabled</dt>
+        <dd>
+          Takes an array of strings to determine what parts of the variable can not be edited.<br/>
+          Valid strings:
+          <ul>
+            <li><code>type</code></li>
+            <li><code>name</code></li>
+            <li><code>value</code></li>
+          </ul>
+        </dd>
+      </dl>
+    </section>
+
+    <section class="widget-examples">
+      <header>
+        <h2>Examples</h2>
+      </header>
+
+
+      <div class="widget-example"
+           id="example-1"
+           ng-controller="example1Controller">
+        <h3>Editable variables</h3>
+        <pre ng-non-bindable></pre>
+        <div class="test-container">
+          <div cam-widget-variables-table
+               cam-variables="vars">
+          </div>
+        </div><!-- /.test-container -->
+      </div><!-- /.widget-example -->
+
+
+      <div class="widget-example"
+           id="example-2"
+           ng-controller="example2Controller">
+        <h3>Custom columns</h3>
+        <pre ng-non-bindable></pre>
+        <div class="test-container">
+          <div cam-widget-variables-table
+               cam-headers="headers"
+               cam-variables="vars">
+          </div>
+
+          <div cam-widget-variables-table
+               cam-editable="[]"
+               cam-headers="headers"
+               cam-variables="vars">
+          </div>
+        </div><!-- /.test-container -->
+      </div><!-- /.widget-example -->
+    </section>
+
+    <!-- gh-pages-footer -->
+
+    <script src="node_modules/requirejs/require.js"></script>
+    <script>
+      require.config({
+        paths: {text: 'node_modules/requirejs-text/text'}
+      });
+      require(['text!test-conf.json'], function(rConf) {
+        'use strict';
+        rConf = JSON.parse(rConf);
+        require.config(rConf);
+        require([
+          'angular',
+          'lib/widgets/variables-table/cam-widget-variables-table',
+          'lib/widgets/variable/cam-widget-variable',
+          'angular-bootstrap'
+        ], function (
+          angular,
+          variablesTableDefinition,
+          variableDefinition
+        ) {
+
+          var variableModule = angular.module('variableModule', [
+            'ui.bootstrap'
+          ]);
+
+          variableModule.directive('camWidgetVariablesTable', variablesTableDefinition);
+          variableModule.directive('camWidgetVariable', variableDefinition);
+
+          var testModule = angular.module('testModule', [variableModule.name]);
+          var vars = [
+            {
+              name:   null,
+              type:   null
+            },
+            {
+              name:   'booleanVar',
+              type:   'Boolean',
+              value:  true
+            },
+            {
+              name:   'dateVar',
+              type:   'Date',
+              value:  '2015-03-23T13:14:06.340Z'
+            },
+            {
+              name:   'doubleVar',
+              type:   'Double',
+              value:  '12.34'
+            },
+            {
+              name:   'integerVar',
+              type:   'Integer',
+              value:  '1000'
+            },
+            {
+              name:   'longVar',
+              type:   'Long',
+              value:  '-100000000'
+            },
+            {
+              name:   'nullVar',
+              type:   'Null',
+              value:  null
+            },
+            {
+              name:   'objectVar',
+              type:   'Object',
+              value:  'rO0ABXNyACpvcmcuY2FtdW5kYS5icG0ucGEuc2VydmljZS5Db2NrcGl0VmFyaWFibGUAAAAAAAAAAQIAA0wABWRhdGVzdAAQTGphdmEvdXRpbC9MaXN0O0wABG5hbWV0ABJMamF2YS9sYW5nL1N0cmluZztMAAV2YWx1ZXEAfgACeHBzcgATamF2YS51dGlsLkFycmF5TGlzdHiB0h2Zx2GdAwABSQAEc2l6ZXhwAAAAAXcEAAAAAXNyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAUyieV6meHh0AAR0ZXN0dAAUY29ja3BpdFZhcmlhYmxlVmFsdWU',
+              valueInfo: {
+                objectTypeName: 'org.camunda.bpm.pa.service.CockpitVariable',
+                serializationDataFormat: 'application/x-java-serialized-object'
+              }
+            },
+            {
+              name:   'shortVar',
+              type:   'Short',
+              value:  '-32768'
+            },
+            {
+              name:   'stringVar',
+              type:   'String',
+              value:  'Some string value'
+            }
+          ];
+
+          testModule.controller('example1Controller', ['$scope', function($scope) {
+            // $scope.headers = {
+            //   type:       'Type',
+            //   name:       'Name',
+            //   value:      'Value',
+            // };
+            $scope.vars = vars.map(function (variable) {
+              return {
+                variable: variable
+              };
+            });
+          }]);
+
+          testModule.controller('example2Controller', ['$scope', function($scope) {
+            $scope.headers = {
+              plain:      'Plain',
+              name:       'Name',
+              unused:     'Unused',
+              value:      'Value',
+              type:       'Type',
+              formatted:  'Formatted'
+            };
+
+            $scope.vars = vars.map(function (variable, v) {
+              return {
+                variable: variable,
+
+                additions: {
+                  plain:      'variable #' + v,
+                  formatted:  '<i>HTML</i>',
+                  missing:    'should not be printed'
+                }
+              };
+            });
+          }]);
+
+          angular.element(document).ready(function() {
+            angular.bootstrap(document.body, [testModule.name]);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

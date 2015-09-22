@@ -1,0 +1,18 @@
+[cam-widget-variables-table] {
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  thead {
+    font-weight: bolder;
+  }
+  td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: @padding-base-vertical @padding-base-horizontal;
+    &.editable {
+      padding: 0;
+      background-color: fade(@brand-primary, 10);
+    }
+  }
+}
