@@ -3,16 +3,50 @@
     width: 100%;
     table-layout: fixed;
   }
+
   thead {
     font-weight: bolder;
   }
+
   td {
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: @padding-base-vertical @padding-base-horizontal;
+
     &.editable {
       padding: 0;
       background-color: fade(@brand-primary, 10);
+    }
+
+    &.value {
+      position: relative;
+
+      > a,
+      > input {
+        float: left;
+        position: absolute;
+        left: 32px;
+        top: 0;
+        bottom: 0;
+        right: 0;
+      }
+
+      > a {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+        height: 100%;
+        line-height: 16px;
+        padding: @padding-base-vertical 0;
+        overflow: hidden;
+      }
+
+      > .set-null {
+        text-align: center;
+        left: 0;
+        right: auto;
+        width: 32px;
+      }
     }
   }
 }

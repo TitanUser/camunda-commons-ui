@@ -10,17 +10,18 @@
   <tbody>
     <tr ng-repeat="(v, info) in variables">
       <td ng-repeat="headerName in headerNames"
-          ng-class="[editable.indexOf(headerName) > -1 ? 'editable' : null, headerName]"
+          ng-init="variable=info.variable"
+          ng-class="[isEditable(headerName) ? 'editable' : null, info.variable.type, headerName]"
           ng-switch on="headerName">
         <!-- ---------------------------------- -->
         <div ng-switch-when="type"
-             ng-if="editable.indexOf('type') < 0">
-          {{ variables[v].variable.type }}
+             ng-if="!isEditable('type')">
+          {{ variable.type }}
         </div>
         <select class="form-control"
                 ng-switch-when="type"
-                ng-if="editable.indexOf('type') > -1"
-                ng-model="variables[v].variable.type"
+                ng-if="isEditable('type')"
+                ng-model="variable.type"
                 ng-options="variableType for variableType in variableTypes track by variableType"
                 ng-disabled="isDisabled('type')"
                 required>
@@ -30,52 +31,52 @@
 
         <!-- ---------------------------------- -->
         <div ng-switch-when="name"
-             ng-if="editable.indexOf('name') < 0">
-          {{ variables[v].variable.name }}
+             ng-if="!isEditable('name')">
+          {{ variable.name }}
         </div>
 
         <input class="form-control"
                ng-switch-when="name"
-               ng-model="variables[v].variable.name"
-               ng-if="editable.indexOf('name') > -1" />
+               ng-model="variable.name"
+               ng-if="isEditable('name')" />
         <!-- ---------------------------------- -->
 
 
         <!-- ---------------------------------- -->
         <div ng-switch-when="value"
-             ng-if="editable.indexOf('value') < 0">
-          {{ variables[v].variable.value }}
+             ng-if="!isEditable('value')">
+          {{ variable.value }}
         </div>
 
-        <div ng-switch-when="value"
-             ng-if="editable.indexOf('value') > -1">
-          <a ng-click="setNull(v)"
-             class="btn btn-default set-null"
-             tooltip-append-to-body="true"
-             tooltip="Set value to &quot;null&quot;">
-            <span class="glyphicon glyphicon-remove"></span>
-          </a>
+        <a ng-switch-when="value"
+           ng-if="isEditable('value')"
+           ng-click="setNull(v)"
+           class="set-null"
+           tooltip-append-to-body="true"
+           tooltip="Set value to &quot;null&quot;">
+          <span class="glyphicon glyphicon-remove"></span>
+        </a>
 
-          <input ng-if="isPrimitive(variables[v].variable.type) && !useCheckbox(variables[v].variable.type)"
-                 type="text"
-                 class="form-control"
-                 ng-model="variables[v].variable.value"
-                 placeholder="Value of the variable"
-                 cam-variable-validator="{{variables[v].variable.type}}" />
+        <input ng-switch-when="value"
+               ng-if="isEditable('value') && isPrimitive(variable.type) && !useCheckbox(variable.type)"
+               type="text"
+               class="form-control"
+               ng-model="variable.value"
+               placeholder="Value of the variable"
+               cam-variable-validator="{{variable.type}}" />
 
-          <input ng-if="useCheckbox(variables[v].variable.type)"
-                 type="checkbox"
-                 ng-model="variables[v].variable.value"
-                 placeholder="Value of the variable"
-                 cam-variable-validator="{{variables[v].variable.type}}" />
+        <input ng-switch-when="value"
+               ng-if="isEditable('value') && useCheckbox(variable.type)"
+               type="checkbox"
+               ng-model="variable.value"
+               placeholder="Value of the variable"
+               cam-variable-validator="{{variable.type}}" />
 
-          <div ng-if="variable.type === 'Object'"
-               class="form-control-static">
-            <a ng-click="editVariableValue()">
-              {{ variable.valueInfo.objectTypeName || '&lt;undefined&gt;' }}
-            </a>
-          </div>
-        </div><!-- / value -->
+        <a ng-switch-when="value"
+           ng-if="isEditable('value') && variable.type === 'Object'"
+           ng-click="editVariableValue(v)">
+          {{ variable.valueInfo.objectTypeName || '&lt;undefined&gt;' }}
+        </a>
         <!-- ---------------------------------- -->
 
 
