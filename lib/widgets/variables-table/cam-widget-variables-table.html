@@ -82,6 +82,11 @@
              tooltip="Re-set to previous or default value">
             <span class="null-symbol">&lt;null&gt;</span>
           </a>
+
+          <span ng-if="variable.type === 'Null'"
+                class="null-value">
+            <span class="null-symbol">&lt;null&gt;</span>
+          </span>
         </div><!-- / value-wrapper -->
         <!-- ................................................................................... -->
 
