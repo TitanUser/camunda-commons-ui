@@ -8,10 +8,11 @@
   </thead>
 
   <tbody>
-    <tr ng-repeat="(v, info) in variables">
+    <tr ng-repeat="(v, info) in variables"
+        ng-class="[info.valid ? null : 'ng-invalid', info.valid ? null : 'ng-invalid-cam-variable-validator']">
       <td ng-repeat="headerName in headerNames"
           ng-init="variable=info.variable"
-          ng-class="[isEditable(headerName) ? 'editable' : null, info.variable.type, headerName]"
+          ng-class="[isEditable(headerName) ? 'editable' : null, (info.variable.type || '').toLowerCase(), headerName]"
           ng-switch on="headerName">
         <!-- ---------------------------------- -->
         <div ng-switch-when="type"

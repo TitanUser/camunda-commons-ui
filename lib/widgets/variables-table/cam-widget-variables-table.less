@@ -2,10 +2,12 @@
   table {
     width: 100%;
     table-layout: fixed;
+    border-bottom: 1px solid #ddd;
   }
 
   thead {
     font-weight: bolder;
+    border-bottom: 2px solid #ddd;
   }
 
   td {
@@ -19,6 +21,22 @@
 
     .form-control {
       border: none;
+    }
+  }
+
+
+  tbody {
+    tr.ng-invalid td {
+      background-color: fade(@brand-danger, 20);
+      color: @brand-danger;
+    }
+
+    td {
+      &.type,
+      &.name,
+      &.value {
+        font-family: monospace;
+      }
     }
   }
 
@@ -37,6 +55,7 @@
     }
 
     > a {
+      // font-family: monospace;
       width: auto;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -53,6 +72,15 @@
       text-align: center;
       background-color: @gray-lighter;
       border: 1px solid @gray-light;
+    }
+  }
+
+  .ng-invalid {
+    input {
+      color: @brand-danger;
+    }
+    .value-wrapper {
+      color: @brand-danger;
     }
   }
 }
