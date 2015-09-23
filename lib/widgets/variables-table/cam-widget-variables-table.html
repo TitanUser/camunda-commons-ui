@@ -1,7 +1,7 @@
 <table class="cam-table">
   <thead>
     <tr>
-      <td ng-repeat="headerName in headerNames" ng-class="headerName">
+      <td ng-repeat="headerName in headerNames" ng-class="'col-' + headerName">
         {{ headers[headerName] }}
       </td>
     </tr>
@@ -12,9 +12,9 @@
         ng-class="[info.valid ? null : 'ng-invalid', info.valid ? null : 'ng-invalid-cam-variable-validator']">
       <td ng-repeat="headerName in headerNames"
           ng-init="variable=info.variable"
-          ng-class="[isEditable(headerName) ? 'editable' : null, (info.variable.type || '').toLowerCase(), headerName]"
+          ng-class="[isEditable(headerName) ? 'editable' : null, 'type-' + (info.variable.type || '').toLowerCase(), 'col-' + headerName]"
           ng-switch on="headerName">
-        <!-- ---------------------------------- -->
+        <!-- ................................................................................... -->
         <div ng-switch-when="type"
              ng-if="!isEditable('type')">
           {{ variable.type }}
@@ -26,10 +26,10 @@
                 ng-options="variableType for variableType in variableTypes track by variableType"
                 required>
         </select>
-        <!-- ---------------------------------- -->
+        <!-- ................................................................................... -->
 
 
-        <!-- ---------------------------------- -->
+        <!-- ................................................................................... -->
         <div ng-switch-when="name"
              ng-if="!isEditable('name')">
           {{ variable.name }}
@@ -39,10 +39,10 @@
                ng-switch-when="name"
                ng-model="variable.name"
                ng-if="isEditable('name')" />
-        <!-- ---------------------------------- -->
+        <!-- ................................................................................... -->
 
 
-        <!-- ---------------------------------- -->
+        <!-- ................................................................................... -->
         <div ng-switch-when="value"
              ng-if="!isEditable('value')">
           {{ variable.value }}
@@ -63,14 +63,12 @@
                  type="text"
                  class="form-control"
                  ng-model="variable.value"
-                 placeholder="Value of the variable"
-                 cam-variable-validator="{{variable.type}}" />
+                 placeholder="Value of the variable" />
 
           <input ng-if="useCheckbox(variable.type)"
                  type="checkbox"
                  ng-model="variable.value"
-                 placeholder="Value of the variable"
-                 cam-variable-validator="{{variable.type}}" />
+                 placeholder="Value of the variable" />
 
           <a ng-if="variable.type === 'Object' && !isNull(v)"
              ng-click="editVariableValue(v)">
@@ -85,7 +83,7 @@
             <span class="null-symbol">&lt;null&gt;</span>
           </a>
         </div><!-- / value-wrapper -->
-        <!-- ---------------------------------- -->
+        <!-- ................................................................................... -->
 
 
         <div ng-switch-default ng-bind-html="info.additions[headerName]"></div>
