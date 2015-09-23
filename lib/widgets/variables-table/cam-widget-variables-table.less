@@ -14,39 +14,45 @@
 
     &.editable {
       padding: 0;
-      background-color: fade(@brand-primary, 10);
+      background-color: fade(@link-color, 5);
     }
 
-    &.value {
-      position: relative;
+    .form-control {
+      border: none;
+    }
+  }
 
-      > a,
-      > input {
-        float: left;
-        position: absolute;
-        left: 32px;
-        top: 0;
-        bottom: 0;
-        right: 0;
-      }
+  .value-wrapper {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 
-      > a {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        vertical-align: middle;
-        height: 100%;
-        line-height: 16px;
-        padding: @padding-base-vertical 0;
-        overflow: hidden;
-      }
+    > a,
+    > input {
+      display: table-cell;
+    }
 
-      > .set-null {
-        text-align: center;
-        left: 0;
-        right: auto;
-        width: 32px;
-      }
+    > input[type=checkbox] {
+      margin: 12px auto 0 @padding-base-horizontal;
+    }
+
+    > a {
+      width: auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      padding: @padding-base-vertical @padding-base-horizontal;
+    }
+
+    > .set-null {
+      width: 38px;
+      height: 34px;
+    }
+
+    .null-symbol {
+      text-align: center;
+      background-color: @gray-lighter;
+      border: 1px solid @gray-light;
     }
   }
 }

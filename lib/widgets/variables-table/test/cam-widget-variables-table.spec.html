@@ -100,6 +100,21 @@
           </div>
         </div><!-- /.test-container -->
       </div><!-- /.widget-example -->
+
+
+      <div class="widget-example"
+           id="example-3"
+           ng-controller="example3Controller">
+        <h3>Custom columns</h3>
+        <pre ng-non-bindable></pre>
+        <div class="test-container">
+          <div cam-widget-variables-table
+               cam-editable="[]"
+               cam-headers="headers"
+               cam-variables="vars">
+          </div>
+        </div><!-- /.test-container -->
+      </div><!-- /.widget-example -->
     </section>
 
     <!-- gh-pages-footer -->
@@ -189,19 +204,14 @@
           ];
 
           testModule.controller('example1Controller', ['$scope', function($scope) {
-            // $scope.headers = {
-            //   type:       'Type',
-            //   name:       'Name',
-            //   value:      'Value',
-            // };
-            $scope.vars = vars.map(function (variable) {
+            $scope.vars = angular.copy(vars).map(function (variable) {
               return {
                 variable: variable
               };
             });
           }]);
 
-          testModule.controller('example2Controller', ['$scope', function($scope) {
+          testModule.controller('example2Controller', ['$scope', '$sce', function($scope, $sce) {
             $scope.headers = {
               plain:      'Plain',
               name:       'Name',
@@ -211,15 +221,28 @@
               formatted:  'Formatted'
             };
 
-            $scope.vars = vars.map(function (variable, v) {
+            $scope.vars = angular.copy(vars).map(function (variable, v) {
               return {
                 variable: variable,
 
                 additions: {
-                  plain:      'variable #' + v,
-                  formatted:  '<i>HTML</i>',
-                  missing:    'should not be printed'
+                  plain:      $sce.trustAsHtml('variable #' + v),
+                  formatted:  $sce.trustAsHtml('<i>HTML</i>'),
+                  missing:    $sce.trustAsHtml('should not be printed')
                 }
+              };
+            });
+          }]);
+
+          testModule.controller('example3Controller', ['$scope', function($scope) {
+            $scope.headers = {
+              type:       'Type',
+              value:      'Value'
+            };
+
+            $scope.vars = angular.copy(vars).map(function (variable) {
+              return {
+                variable: variable
               };
             });
           }]);
