@@ -80,6 +80,17 @@
     .null-value {
       width: auto;
     }
+
+    &.read-only {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+  }
+
+  .type-object .read-only[ng-click] {
+    cursor: pointer;
+    color: @link-color;
   }
 
   .ng-invalid {

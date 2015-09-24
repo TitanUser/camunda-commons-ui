@@ -44,7 +44,15 @@
 
         <!-- ................................................................................... -->
         <div ng-switch-when="value"
-             ng-if="!isEditable('value')">
+             ng-if="!isEditable('value') && variable.type === 'Object'"
+             ng-click="editVariableValue(v)"
+             class="read-only value-wrapper">
+          {{ variable.value }}
+        </div>
+
+        <div ng-switch-when="value"
+             ng-if="!isEditable('value') && variable.type !== 'Object'"
+             class="read-only value-wrapper">
           {{ variable.value }}
         </div>
 
@@ -59,7 +67,7 @@
             <span class="glyphicon glyphicon-remove"></span>
           </a>
 
-          <input ng-if="isPrimitive(variable.type) && !useCheckbox(variable.type)"
+          <input ng-if="isPrimitive(variable.type) && !useCheckbox(variable.type) && !isNull(v)"
                  type="text"
                  class="form-control"
                  ng-model="variable.value"
