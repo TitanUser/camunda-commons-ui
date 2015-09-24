@@ -30,35 +30,49 @@
       <h3>Options</h3>
       <dl>
         <dt><span class="badge">=</span> cam-variables</dt>
-        <dd>The variable to be edited / displayed</dd>
-
-        <dt><span class="badge">@?</span> display</dt>
         <dd>
-          Takes a boolean determining if the widget is only aimed to display the variable.
-          <a href="#example-3">Example</a>
+          The variable to be edited / displayed contained in an array as following
+          <pre>[
+  {
+    variable: {
+      name: 'variableName',
+      type: 'String',
+      value: 'Some string value'
+    },
+
+    // is aimed to hold additional column information
+    additions: {
+      additionalColumn1: 'cell content',
+      additionalColumn2: 'other cell content'
+    }
+  }
+]</pre>
+          <strong>Note:</strong> if the cell content of an additional column is an HTML string, you need to use something like <code><a href="https://code.angularjs.org/1.2.16/docs/api/ng/service/$sce#trustAsHtml">$sce.trustAsHtml('Some &lt;i&gt;HTML&lt;/i&gt; string')</a></code>.
         </dd>
 
-        <dt><span class="badge">=?</span> shown</dt>
+        <dt><span class="badge">=?</span> cam-headers</dt>
         <dd>
-          Takes an array of strings to determine which parts of the variable is shown.<br/>
-          Valid strings:
-          <ul>
-            <li><code>type</code></li>
-            <li><code>name</code></li>
-            <li><code>value</code></li>
-          </ul>
-          <a href="#example-3">Example</a>
+          Takes an object to determine which columns should be shown, their positions and which text should be used in their headers.<br/>
+          By default, the following columns are shown (with their respective header):
+          <ol>
+            <li><code>name</code>: Name</li>
+            <li><code>type</code>: Type</li>
+            <li><code>value</code>: Value</li>
+          </ol>
+          <a href="#example-2">Example</a>
         </dd>
 
-        <dt><span class="badge">=?</span> disabled</dt>
+        <dt><span class="badge">=?</span> editable</dt>
         <dd>
-          Takes an array of strings to determine what parts of the variable can not be edited.<br/>
+          Takes an array of strings to determine which columns are editable.<br/>
           Valid strings:
           <ul>
-            <li><code>type</code></li>
             <li><code>name</code></li>
+            <li><code>type</code></li>
             <li><code>value</code></li>
           </ul>
+          By default, all the above are editable.
+          <a href="#example-3">Example</a>
         </dd>
       </dl>
     </section>
@@ -73,11 +87,11 @@
            id="example-1"
            ng-controller="example1Controller">
         <h3>Editable variables</h3>
-        <pre ng-non-bindable></pre>
+        <pre ng-non-bindable>&lt;div cam-widget-variables-table
+     cam-variables="vars"&gt;&lt;/div&gt;</pre>
         <div class="test-container">
           <div cam-widget-variables-table
-               cam-variables="vars">
-          </div>
+               cam-variables="vars"></div>
         </div><!-- /.test-container -->
       </div><!-- /.widget-example -->
 
@@ -86,33 +100,28 @@
            id="example-2"
            ng-controller="example2Controller">
         <h3>Custom columns</h3>
-        <pre ng-non-bindable></pre>
-        <div class="test-container">
-          <div cam-widget-variables-table
-               cam-headers="headers"
-               cam-variables="vars">
-          </div>
+        <pre ng-non-bindable>&lt;h4&gt;Editable and additions&lt;/h4&gt;
+&lt;div cam-widget-variables-table
+     cam-headers="headers"
+     cam-variables="vars"&gt;&lt;/div&gt;
 
+&lt;h4&gt;Read only&lt;/h4&gt;
+&lt;div cam-widget-variables-table
+     cam-editable="[]"
+     cam-headers="{plain: 'Plain text', name: 'Name', value: 'Value'}"
+     cam-variables="vars"&gt;&lt;/div&gt;</pre>
+        <div class="test-container">
+          <h4>Editable and additions</h4>
+          <div cam-widget-variables-table
+               cam-editable="['value']"
+               cam-headers="headers"
+               cam-variables="vars"></div>
+
+          <h4>Read only</h4>
           <div cam-widget-variables-table
                cam-editable="[]"
-               cam-headers="{name: 'Name', type: 'Type', value: 'Value'}"
-               cam-variables="vars">
-          </div>
-        </div><!-- /.test-container -->
-      </div><!-- /.widget-example -->
-
-
-      <div class="widget-example"
-           id="example-3"
-           ng-controller="example3Controller">
-        <h3>Custom columns</h3>
-        <pre ng-non-bindable></pre>
-        <div class="test-container">
-          <div cam-widget-variables-table
-               cam-editable="[]"
-               cam-headers="headers"
-               cam-variables="vars">
-          </div>
+               cam-headers="{plain: 'Plain text', name: 'Variable name', value: 'Value'}"
+               cam-variables="vars"></div>
         </div><!-- /.test-container -->
       </div><!-- /.widget-example -->
     </section>
