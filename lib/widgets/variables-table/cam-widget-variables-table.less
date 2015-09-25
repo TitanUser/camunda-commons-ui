@@ -5,39 +5,65 @@
     border-bottom: 1px solid #ddd;
   }
 
+  &[data-fluid-layout] {
+    table {
+      table-layout: auto;
+    }
+
+    td.actions {
+      max-width: 120px;
+      min-width: 80px;
+    }
+  }
+
   thead {
     font-weight: bolder;
     border-bottom: 2px solid #ddd;
+
+    td {
+      vertical-align: bottom;
+    }
   }
 
   td {
     overflow: hidden;
     text-overflow: ellipsis;
-
-    &.editable {
-      padding: 0;
-      background-color: fade(@link-color, 5);
-    }
-
     .form-control {
       border: none;
     }
   }
 
 
+
+
   tbody {
-    tr.ng-invalid td {
+    tr.ng-invalid > td {
       background-color: fade(@brand-danger, 20);
       color: @brand-danger;
     }
 
     td {
+      vertical-align: middle;
+
       &.col-type,
       &.col-name,
       &.col-value {
         font-family: monospace;
       }
     }
+  }
+
+  table.cam-table > tbody > tr > td {
+    vertical-align: middle;
+  }
+
+  table.cam-table > tbody > tr.editing > td.editable {
+    padding: 0;
+  }
+
+  td.actions {
+    text-align: right;
+    width: 80px;
   }
 
   .value-wrapper {

@@ -4,24 +4,29 @@
       <td ng-repeat="headerName in headerNames" ng-class="'col-' + headerName">
         {{ headers[headerName] }}
       </td>
+
+      <td class="actions"
+          ng-if="editable.length">
+        Actions
+      </td>
     </tr>
   </thead>
 
   <tbody>
     <tr ng-repeat="(v, info) in variables"
-        ng-class="[info.valid ? null : 'ng-invalid', info.valid ? null : 'ng-invalid-cam-variable-validator']">
+        ng-class="rowClasses(info, v)">
       <td ng-repeat="headerName in headerNames"
           ng-init="variable=info.variable"
-          ng-class="[isEditable(headerName) ? 'editable' : null, 'type-' + (info.variable.type || '').toLowerCase(), 'col-' + headerName]"
+          ng-class="colClasses(info, headerName, v)"
           ng-switch on="headerName">
         <!-- ................................................................................... -->
         <div ng-switch-when="type"
-             ng-if="!isEditable('type')">
+             ng-if="!isEditable('type', info)">
           {{ variable.type }}
         </div>
         <select class="form-control"
                 ng-switch-when="type"
-                ng-if="isEditable('type')"
+                ng-if="isEditable('type', info)"
                 ng-model="variable.type"
                 ng-options="variableType for variableType in variableTypes track by variableType"
                 required>
@@ -31,34 +36,34 @@
 
         <!-- ................................................................................... -->
         <div ng-switch-when="name"
-             ng-if="!isEditable('name')">
+             ng-if="!isEditable('name', info)">
           {{ variable.name }}
         </div>
 
         <input class="form-control"
                ng-switch-when="name"
                ng-model="variable.name"
-               ng-if="isEditable('name')" />
+               ng-if="isEditable('name', info)" />
         <!-- ................................................................................... -->
 
 
         <!-- ................................................................................... -->
         <div ng-switch-when="value"
-             ng-if="!isEditable('value') && variable.type === 'Object'"
+             ng-if="!isEditable('value', info) && variable.type === 'Object'"
              ng-click="editVariableValue(v)"
              class="read-only value-wrapper">
           {{ variable.value }}
         </div>
 
         <div ng-switch-when="value"
-             ng-if="!isEditable('value') && variable.type !== 'Object'"
+             ng-if="!isEditable('value', info) && variable.type !== 'Object'"
              class="read-only value-wrapper">
           {{ variable.value }}
         </div>
 
         <div class="value-wrapper"
              ng-switch-when="value"
-             ng-if="isEditable('value')">
+             ng-if="isEditable('value', info)">
           <a ng-click="setNull(v)"
              ng-if="!isNull(v)"
              class="set-null"
@@ -100,6 +105,42 @@
 
 
         <div ng-switch-default ng-bind-html="info.additions[headerName]"></div>
+      </td>
+
+      <td class="actions"
+          ng-if="editable.length">
+        <div ng-if="!info.editMode"
+             class="btn-group">
+          <button class="btn btn-sm btn-primary"
+                  ng-click="info.editMode = !info.editMode"
+                  tooltip-append-to-body="true"
+                  tooltip="Edit the variable">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+          <button class="btn btn-sm btn-default"
+                  ng-click="dropVariable(v)"
+                  tooltip-append-to-body="true"
+                  tooltip="Delete the variable">
+            <span class="glyphicon glyphicon glyphicon-trash"></span>
+          </button>
+        </div>
+
+        <div ng-if="info.editMode"
+             class="btn-group">
+          <button class="btn btn-sm btn-primary"
+                  ng-disabled="!info.valid || !info.changed"
+                  ng-click="saveVariable(v)"
+                  tooltip-append-to-body="true"
+                  tooltip="Save the variable">
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+          <button class="btn btn-sm btn-default"
+                  ng-click="revertVariable(v)"
+                  tooltip-append-to-body="true"
+                  tooltip="Revert the variable">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        </div>
       </td>
     </tr>
   </tbody>
