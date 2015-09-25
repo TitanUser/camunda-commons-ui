@@ -111,14 +111,14 @@
           ng-if="editable.length">
         <div ng-if="!info.editMode"
              class="btn-group">
-          <button class="btn btn-sm btn-primary"
-                  ng-click="info.editMode = !info.editMode"
+          <button class="btn btn-xs btn-primary"
+                  ng-click="info.editMode = true"
                   tooltip-append-to-body="true"
                   tooltip="Edit the variable">
             <span class="glyphicon glyphicon-pencil"></span>
           </button>
-          <button class="btn btn-sm btn-default"
-                  ng-click="dropVariable(v)"
+          <button class="btn btn-xs btn-default"
+                  ng-click="deleteVar(v)"
                   tooltip-append-to-body="true"
                   tooltip="Delete the variable">
             <span class="glyphicon glyphicon glyphicon-trash"></span>
@@ -127,15 +127,15 @@
 
         <div ng-if="info.editMode"
              class="btn-group">
-          <button class="btn btn-sm btn-primary"
+          <button class="btn btn-xs btn-primary"
                   ng-disabled="!info.valid || !info.changed"
                   ng-click="saveVariable(v)"
                   tooltip-append-to-body="true"
                   tooltip="Save the variable">
             <span class="glyphicon glyphicon-ok"></span>
           </button>
-          <button class="btn btn-sm btn-default"
-                  ng-click="revertVariable(v)"
+          <button class="btn btn-xs btn-default"
+                  ng-click="info.editMode = false"
                   tooltip-append-to-body="true"
                   tooltip="Revert the variable">
             <span class="glyphicon glyphicon-remove"></span>

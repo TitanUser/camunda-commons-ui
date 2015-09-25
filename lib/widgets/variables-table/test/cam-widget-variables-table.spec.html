@@ -99,7 +99,8 @@
      cam-variables="vars"&gt;&lt;/div&gt;</pre>
         <div class="test-container">
           <div cam-widget-variables-table
-               cam-variables="vars"></div>
+               cam-variables="vars"
+               on-save="saveFunction()"></div>
         </div><!-- /.test-container -->
       </div><!-- /.widget-example -->
 
@@ -221,6 +222,11 @@
           ];
 
           testModule.controller('example1Controller', ['$scope', function($scope) {
+            $scope.saveFunction = function () {
+              console.info('example controller saving', this, arguments);
+              return 'bullshit';
+            };
+
             $scope.vars = angular.copy(vars).map(function (variable) {
               return {
                 variable: variable
