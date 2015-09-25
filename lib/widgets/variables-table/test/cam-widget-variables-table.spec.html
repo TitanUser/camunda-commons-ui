@@ -96,11 +96,19 @@
            ng-controller="example1Controller">
         <h3>Editable variables</h3>
         <pre ng-non-bindable>&lt;div cam-widget-variables-table
-     cam-variables="vars"&gt;&lt;/div&gt;</pre>
+     cam-variables="vars"&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li ng-repeate="change in changes"&gt;{{ change.name }} | {{ change.type }} | {{ change.value }}&lt;/li&gt;
+&lt;/ol&gt;</pre>
         <div class="test-container">
           <div cam-widget-variables-table
                cam-variables="vars"
-               on-save="saveFunction()"></div>
+               on-save="saveFunction"></div>
+
+          <ol>
+            <li ng-repeat="change in changes">{{ change.name }} | {{ change.type }} | {{ change.value }}</li>
+          </ol>
         </div><!-- /.test-container -->
       </div><!-- /.widget-example -->
 
@@ -222,9 +230,12 @@
           ];
 
           testModule.controller('example1Controller', ['$scope', function($scope) {
-            $scope.saveFunction = function () {
-              console.info('example controller saving', this, arguments);
-              return 'bullshit';
+            $scope.changes = [];
+
+            $scope.saveFunction = function (info/*, i*/) {
+              // copy otherwise it keeps the reference
+              $scope.changes.push(angular.copy(info.variable));
+              // return
             };
 
             $scope.vars = angular.copy(vars).map(function (variable) {
