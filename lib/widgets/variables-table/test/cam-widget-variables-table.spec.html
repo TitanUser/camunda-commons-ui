@@ -86,7 +86,7 @@
           <a href="#example-2">Example</a>
         </dd>
 
-        <dt><span class="badge">=?</span> on-save<span class="function-definition">(<span class="params">info, delta</span>):<span class="returns">promise</span></span>
+        <dt><span class="badge">=?</span> on-save<span class="function-definition">(<span class="params">info, delta</span>): <span class="returns">promise</span></span>
         </dt>
         <dd>
           Can be used to pass a function triggered when saving.<br/>
@@ -103,19 +103,32 @@
           <a href="#example-1">Example</a>
         </dd>
 
-        <dt><span class="badge">=?</span> on-delete<span class="function-definition">(<span class="params">info, delta</span>):<span class="returns">promise</span></span>
+        <dt><span class="badge">=?</span> on-delete<span class="function-definition">(<span class="params">info, delta</span>): <span class="returns">promise</span></span>
         </dt>
         <dd>
           The <code>info</code> argument is similar to the one above.
         </dd>
 
-        <dt><span class="badge">=?</span> on-edit<span class="function-definition">(<span class="params">info, delta</span>):<span class="returns">promise</span></span>
+        <dt><span class="badge">=?</span> on-edit<span class="function-definition">(<span class="params">info, delta</span>): <span class="returns">promise</span></span>
         </dt>
         <dd>
           Can be used to customize the modal dialog shown when editing a complex variable.<br/>
           The <code>info</code> argument is similar to the one above.<br />
           If not used, a generic modal dialog will open.<br />
-          <a href="#exmaple-1">Example</a>
+          <a href="#example-1">Example</a>
+        </dd>
+
+        <dt><span class="badge">=?</span> on-upload<span class="function-definition">(<span class="params">info, delta</span>): <span class="returns">promise</span></span>
+        </dt>
+        <dd>
+          Can be used to customize the modal dialog shown when editing a complex variable.<br/>
+          The <code>info</code> argument is similar to the one above.
+        </dd>
+
+        <dt><span class="badge">=?</span> on-download<span class="function-definition">(<span class="params">info, delta</span>): <span class="returns">string URL</span></span></dt>
+        <dd>
+          Can be used to customize create a download link for the variable.<br/>
+          The <code>info</code> argument is similar to the one above.
         </dd>
       </dl>
     </section>
