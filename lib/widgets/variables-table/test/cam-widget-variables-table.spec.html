@@ -73,7 +73,7 @@
           <a href="#example-2">Example</a>
         </dd>
 
-        <dt><span class="badge">=?</span> editable</dt>
+        <dt><span class="badge">=?</span> cam-editable</dt>
         <dd>
           Takes an array of strings to determine which columns are editable.<br/>
           Valid strings:
@@ -82,24 +82,40 @@
             <li><code>type</code></li>
             <li><code>value</code></li>
           </ul>
-          By default, all the above are editable.
-          <a href="#example-3">Example</a>
+          By default, all the above are editable.<br/>
+          <a href="#example-2">Example</a>
         </dd>
 
-        <dt><span class="badge">=?</span> on-save</dt>
+        <dt><span class="badge">=?</span> on-save<span class="function-definition">(<span class="params">info, delta</span>):<span class="returns">promise</span></span>
+        </dt>
         <dd>
-          Can be used to pass a function triggered when saving.
+          Can be used to pass a function triggered when saving.<br/>
+          The <code>info</code> argument is an object with information about the variable similar to:
+          <pre>{
+  "variable": {
+    "type": "...",
+    "name": "...",
+    "value": "...",
+    "valueInfo": "..."
+  },
+  // ...
+}</pre>
           <a href="#example-1">Example</a>
         </dd>
 
-        <dt><span class="badge">=?</span> on-delete</dt>
+        <dt><span class="badge">=?</span> on-delete<span class="function-definition">(<span class="params">info, delta</span>):<span class="returns">promise</span></span>
+        </dt>
         <dd>
-
+          The <code>info</code> argument is similar to the one above.
         </dd>
 
-        <dt><span class="badge">=?</span> on-inspect</dt>
+        <dt><span class="badge">=?</span> on-edit<span class="function-definition">(<span class="params">info, delta</span>):<span class="returns">promise</span></span>
+        </dt>
         <dd>
-
+          Can be used to customize the modal dialog shown when editing a complex variable.<br/>
+          The <code>info</code> argument is similar to the one above.<br />
+          If not used, a generic modal dialog will open.<br />
+          <a href="#exmaple-1">Example</a>
         </dd>
       </dl>
     </section>
@@ -116,18 +132,20 @@
         <h3>Editable variables</h3>
         <pre ng-non-bindable>&lt;div cam-widget-variables-table
      cam-variables="vars"
+     on-edit="editFunction"
      on-save="saveFunction"&gt;&lt;/div&gt;
 
 &lt;ol&gt;
-  &lt;li ng-repeate="change in changes"&gt;{{ change.name }} | {{ change.type }} | {{ change.value }}&lt;/li&gt;
+  &lt;li ng-repeate="change in changes"&gt;{{ change.name }} | {{ change.type }} | {{ change.value }} | {{ change.saved }}&lt;/li&gt;
 &lt;/ol&gt;</pre>
         <div class="test-container">
           <div cam-widget-variables-table
                cam-variables="vars"
+               on-edit="editFunction"
                on-save="saveFunction"></div>
 
           <ol>
-            <li ng-repeat="change in changes">{{ change.name }} | {{ change.type }} | {{ change.value }}</li>
+            <li ng-repeat="change in changes">{{ change.name }} | {{ change.type }} | {{ change.value }} | {{ change.saved }}</li>
           </ol>
         </div><!-- /.test-container -->
       </div><!-- /.widget-example -->
@@ -182,12 +200,16 @@
         require([
           'angular',
           'lib/widgets/variables-table/cam-widget-variables-table',
+          'text!lib/widgets/variables-table/test/fancy-modal.html',
           'lib/widgets/variable/cam-widget-variable',
+          'lib/widgets/variable/cam-variable-utils',
           'angular-bootstrap'
         ], function (
           angular,
           variablesTableDefinition,
-          variableDefinition
+          fancyDialogTemplate,
+          variableDefinition,
+          varUtils
         ) {
 
           var variableModule = angular.module('variableModule', [
@@ -254,13 +276,57 @@
             }
           ];
 
-          testModule.controller('example1Controller', ['$scope', function($scope) {
+
+
+
+
+
+
+          testModule.controller('example1Controller', [
+            '$scope',
+            '$q',
+            '$timeout',
+            '$modal',
+          function(
+            $scope,
+            $q,
+            $timeout,
+            $modal
+          ) {
             $scope.changes = [];
+
+
+            $scope.editFunction = function (info/*, i*/) {
+              console.info('editFunction', info);
+              return $modal.open({
+                template: fancyDialogTemplate,
+
+                windowClass: 'doopi-doo',
+
+                resolve: {
+                  variable: function () { return info.variable; },
+                  readonly: function () { return !info.editMode; }
+                },
+
+                controller: varUtils.modalCtrl
+              }).result;
+            };
+
 
             $scope.saveFunction = function (info/*, i*/) {
               // copy otherwise it keeps the reference
-              $scope.changes.push(angular.copy(info.variable));
-              // return
+              var copy = angular.copy(info.variable);
+              copy.saved = 'Not saved';
+              $scope.changes.push(copy);
+
+              var deferred = $q.defer();
+
+              $timeout(function() {
+                copy.saved = 'Saved';
+                deferred.resolve(copy);
+              }, 500);
+
+              return deferred.promise;
             };
 
             $scope.vars = angular.copy(vars).map(function (variable) {
@@ -269,6 +335,12 @@
               };
             });
           }]);
+
+
+
+
+
+
 
           testModule.controller('example2Controller', ['$scope', '$sce', function($scope, $sce) {
             $scope.headers = {
@@ -293,18 +365,10 @@
             });
           }]);
 
-          testModule.controller('example3Controller', ['$scope', function($scope) {
-            $scope.headers = {
-              type:       'Type',
-              value:      'Value'
-            };
 
-            $scope.vars = angular.copy(vars).map(function (variable) {
-              return {
-                variable: variable
-              };
-            });
-          }]);
+
+
+
 
           angular.element(document).ready(function() {
             angular.bootstrap(document.body, [testModule.name]);

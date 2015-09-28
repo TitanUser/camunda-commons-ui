@@ -53,24 +53,26 @@
     }
   }
 
-  table.cam-table > tbody > tr > td {
-    vertical-align: middle;
-  }
-
-
-  table.cam-table > tbody {
-    > tr > td {
-      padding: @padding-base-vertical @padding-base-horizontal;
+  table.cam-table {
+    > thead,
+    > tbody {
+      > tr > td {
+        vertical-align: middle;
+        white-space: nowrap;
+        padding: @padding-base-vertical @padding-base-horizontal;
+      }
     }
 
-    > tr.editing > td.editable {
-      padding: 0;
+    > tbody {
+      > tr.editing > td.editable {
+        padding: 0;
+      }
     }
   }
 
   td.actions {
     text-align: right;
-    width: 80px;
+    width: 108px;
   }
 
   .value-wrapper {
