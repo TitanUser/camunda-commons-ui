@@ -48,11 +48,18 @@
 
 
         <!-- ................................................................................... -->
+        <a ng-switch-when="value"
+           ng-if="!isEditable('value', info) && variable.type === 'Bytes'"
+           ng-href="{{ downloadLink(info) }}"
+           download="{{ variable.name }}-data">
+          Download
+        </a>
+
         <div ng-switch-when="value"
              ng-if="!isEditable('value', info) && variable.type === 'Object'"
              ng-click="editVariableValue(v)"
              class="read-only value-wrapper">
-          {{ variable.value }}
+          {{ variable.valueInfo.objectTypeName || '&lt;undefined&gt;' }}
         </div>
 
         <div ng-switch-when="value"
@@ -88,12 +95,19 @@
             {{ variable.valueInfo.objectTypeName || '&lt;undefined&gt;' }}
           </a>
 
-          <a ng-if="variable.type !== 'Null' && isNull(v)"
+          <a ng-if="variable.type !== 'Null' && variable.type !== 'Bytes' && isNull(v)"
              ng-click="setNonNull(v)"
              class="null-value"
              tooltip-append-to-body="true"
              tooltip="Re-set to previous or default value">
             <span class="null-symbol">&lt;null&gt;</span>
+          </a>
+
+          <a ng-if="variable.type === 'Bytes'"
+             ng-click="uploadVariable(v)"
+             tooltip-append-to-body="true"
+             tooltip="Upload a new file">
+            Upload
           </a>
 
           <span ng-if="variable.type === 'Null'"
