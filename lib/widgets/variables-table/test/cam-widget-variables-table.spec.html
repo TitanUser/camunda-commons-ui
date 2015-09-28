@@ -139,23 +139,28 @@
         <h3>Custom columns</h3>
         <pre ng-non-bindable>&lt;h4&gt;Editable and additions&lt;/h4&gt;
 &lt;div cam-widget-variables-table
+     class="first"
+     cam-editable="['value']"
      cam-headers="headers"
      cam-variables="vars"&gt;&lt;/div&gt;
 
 &lt;h4&gt;Read only&lt;/h4&gt;
 &lt;div cam-widget-variables-table
+     class="second"
      cam-editable="[]"
      cam-headers="{plain: 'Plain text', name: 'Name', value: 'Value'}"
      cam-variables="vars"&gt;&lt;/div&gt;</pre>
         <div class="test-container">
           <h4>Editable and additions</h4>
           <div cam-widget-variables-table
+               class="first"
                cam-editable="['value']"
                cam-headers="headers"
                cam-variables="vars"></div>
 
           <h4>Read only</h4>
           <div cam-widget-variables-table
+               class="second"
                cam-editable="[]"
                cam-headers="{plain: 'Plain text', name: 'Variable name', value: 'Value'}"
                cam-variables="vars"></div>
