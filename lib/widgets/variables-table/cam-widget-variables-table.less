@@ -57,8 +57,15 @@
     vertical-align: middle;
   }
 
-  table.cam-table > tbody > tr.editing > td.editable {
-    padding: 0;
+
+  table.cam-table > tbody {
+    > tr > td {
+      padding: @padding-base-vertical @padding-base-horizontal;
+    }
+
+    > tr.editing > td.editable {
+      padding: 0;
+    }
   }
 
   td.actions {

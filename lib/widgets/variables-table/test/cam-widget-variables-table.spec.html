@@ -53,6 +53,9 @@
       additionalColumn1: 'cell content',
       additionalColumn2: 'other cell content'
     }
+  },
+  {
+    // ...
   }
 ]</pre>
           <strong>Note:</strong> if the cell content of an additional column is an HTML string, you need to use something like <code><a href="https://code.angularjs.org/1.2.16/docs/api/ng/service/$sce#trustAsHtml">$sce.trustAsHtml('Some &lt;i&gt;HTML&lt;/i&gt; string')</a></code>.
@@ -82,6 +85,22 @@
           By default, all the above are editable.
           <a href="#example-3">Example</a>
         </dd>
+
+        <dt><span class="badge">=?</span> on-save</dt>
+        <dd>
+          Can be used to pass a function triggered when saving.
+          <a href="#example-1">Example</a>
+        </dd>
+
+        <dt><span class="badge">=?</span> on-delete</dt>
+        <dd>
+
+        </dd>
+
+        <dt><span class="badge">=?</span> on-inspect</dt>
+        <dd>
+
+        </dd>
       </dl>
     </section>
 
@@ -96,7 +115,8 @@
            ng-controller="example1Controller">
         <h3>Editable variables</h3>
         <pre ng-non-bindable>&lt;div cam-widget-variables-table
-     cam-variables="vars"&gt;&lt;/div&gt;
+     cam-variables="vars"
+     on-save="saveFunction"&gt;&lt;/div&gt;
 
 &lt;ol&gt;
   &lt;li ng-repeate="change in changes"&gt;{{ change.name }} | {{ change.type }} | {{ change.value }}&lt;/li&gt;
