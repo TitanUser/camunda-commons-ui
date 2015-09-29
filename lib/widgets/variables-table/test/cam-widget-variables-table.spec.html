@@ -171,6 +171,7 @@
         <pre ng-non-bindable>&lt;h4&gt;Editable and additions&lt;/h4&gt;
 &lt;div cam-widget-variables-table
      class="first"
+     on-download="formatDownloadLink"
      cam-editable="['value']"
      cam-headers="headers"
      cam-variables="vars"&gt;&lt;/div&gt;
@@ -185,6 +186,7 @@
           <h4>Editable and additions</h4>
           <div cam-widget-variables-table
                class="first"
+               on-download="formatDownloadLink"
                cam-editable="['value']"
                cam-headers="headers"
                cam-variables="vars"></div>
@@ -361,6 +363,10 @@
 
 
           testModule.controller('example2Controller', ['$scope', '$sce', function($scope, $sce) {
+            $scope.formatDownloadLink = function () {
+              return 'http://i.ytimg.com/vi/2DzryjDrjCM/maxresdefault.jpg';
+            };
+
             $scope.headers = {
               plain:      'Plain',
               name:       'Name',
