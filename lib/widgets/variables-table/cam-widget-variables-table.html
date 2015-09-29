@@ -49,7 +49,7 @@
 
         <!-- ................................................................................... -->
         <a ng-switch-when="value"
-           ng-if="!isEditable('value', info) && variable.type === 'Bytes'"
+           ng-if="!isEditable('value', info) && isBinary(variable.type)"
            ng-href="{{ downloadLink(info) }}"
            download="{{ variable.name }}-data">
           Download
@@ -95,7 +95,7 @@
             {{ variable.valueInfo.objectTypeName || '&lt;undefined&gt;' }}
           </a>
 
-          <a ng-if="variable.type !== 'Null' && variable.type !== 'Bytes' && isNull(v)"
+          <a ng-if="variable.type !== 'Null' && !isBinary(variable.type) && isNull(v)"
              ng-click="setNonNull(v)"
              class="null-value"
              tooltip-append-to-body="true"
@@ -103,7 +103,7 @@
             <span class="null-symbol">&lt;null&gt;</span>
           </a>
 
-          <a ng-if="variable.type === 'Bytes'"
+          <a ng-if="isBinary(variable.type)"
              ng-click="uploadVariable(v)"
              tooltip-append-to-body="true"
              tooltip="Upload a new file">
