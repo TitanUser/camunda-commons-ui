@@ -25,7 +25,8 @@ body {
       margin: 0;
       padding: 0;
       list-style: none;
-      > li > a {
+      > li > a,
+      > li > view > a {
         position: relative;
         display: block;
         padding: 10px 15px;
@@ -37,7 +38,8 @@ body {
   > ul,
   > [ng-transclude] > ul {
     > li {
-      > a {
+      > a,
+      > view > a {
         line-height: (@navbar-height / 2);
         height: @navbar-height;
         > .glyphicon {
