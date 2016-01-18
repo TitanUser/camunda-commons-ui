@@ -9,6 +9,8 @@ module.exports = function(config, lessConfig, pathConfig) {
     resolve(process.cwd(), 'node_modules/camunda-commons-ui/node_modules/bootstrap/less'),
     resolve(process.cwd(), 'node_modules/camunda-commons-ui/lib/widgets'),
     resolve(process.cwd(), 'node_modules/camunda-commons-ui/resources/less'),
+    resolve(process.cwd(), 'node_modules/camunda-commons-ui/resources/css'),
+    resolve(process.cwd(), 'node_modules/camunda-commons-ui/node_modules'),
     resolve(process.cwd(), 'node_modules', 'camunda-' + pathConfig.appName +'-ui', 'styles'),
     resolve(process.cwd(), 'node_modules', 'camunda-' + pathConfig.appName +'-ui', 'client/scripts'),
 
