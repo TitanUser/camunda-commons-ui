@@ -10,6 +10,88 @@
 }
 
 
+h1,
+h2,
+h3 {
+  .font-light;
+}
+
+h1 {
+  text-transform: uppercase;
+}
+
+
+label,
+strong {
+  .font-bold();
+}
+
+
+[ng-click],
+[onclick] {
+  cursor: pointer;
+}
+
+
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+
+
+.text-help {
+  font-style: italic;
+  font-size: 90%;
+  color: @gray;
+  margin-bottom: (@grid-gutter-width / 2);
+}
+
+
+
+
+
+.list-inline > li {
+  padding: 1px 5px;
+}
+
+
+.tab-content {
+  position: relative;
+  padding-top: @grid-gutter-width;
+}
+
+
+.tooltip .tooltip-inner {
+  word-wrap: break-word;
+}
+
+
+.pagination {
+  display: block;
+  clear: both;
+  overflow: visible;
+  text-align: center;
+  margin: (@grid-gutter-width / 2) auto;
+  li {
+    overflow: visible;
+    a {
+      float: none;
+      border: none;
+    }
+  }
+  .active a {
+    background-color: @gray-light;
+  }
+}
+
+
+
+
 
 
 @import "_animate-spin";
